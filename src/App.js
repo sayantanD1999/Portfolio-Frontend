@@ -1,57 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useCookies } from 'react-cookie';
+import MenuBar from "../src/components/MenuBar"
+import Home from "../src/components/pages/Home"
+import SignIn from "../src/components/pages/SignIn"
+import SignUp from "../src/components/pages/SignUp"
+import Protected from './components/Protected'
 import './App.css';
 
+
 function App() {
+  const [isSignedIn, setIsSignedIn] = useState(null)
+  const [cookies, removeCookie] = useCookies(['name']);
+
+  const signin = (signin) => {
+    console.log(signin)
+    if (signin) {
+      setIsSignedIn(true)
+    }
+  }
+
+  const signout = (signout) => {
+    if (signout === false) {
+      setIsSignedIn(false)
+      removeCookie('Login')
+    }
+  }
+  console.log(isSignedIn)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <BrowserRouter>
+      <MenuBar isSignedIn={isSignedIn} signOutHandle={signout} />
+      <Routes>
+        <Route path="/" element={
+          <Protected isSignedIn={isSignedIn}>
+            <Home />
+          </Protected>
+        }
+        />
+        <Route path="/sign-in" element={
+          <Protected isSignedIn={!isSignedIn}>
+            <SignIn signInHandle={signin} />
+          </Protected>
+        }
+        />
+        <Route path="/sign-up" element={<SignUp />} />
+
+      </Routes>
+      {/* {isSignedIn ? (
+        <div className="d-grid mt-5">
+          <button className="btn-danger" onClick={signout} >
+            Sign out
+          </button>
+        </div>
+      ) : (
+        ""
+      )} */}
+    </BrowserRouter>
   );
 }
 
