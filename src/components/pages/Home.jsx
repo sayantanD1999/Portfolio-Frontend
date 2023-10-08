@@ -1,9 +1,17 @@
-import React from 'react'
+import React from "react";
+import { useSelector } from "react-redux";
+import { getUserDetails } from "../../app/store/slices/auth";
 
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+  const user = useSelector(getUserDetails);
 
-export default Home
+  return (
+    <div>
+      Home
+      <br />
+      <>Email : {user.email} </>
+    </div>
+  );
+};
+
+export default Home;

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { asyncUserLogin, asyncUserSignup } from "../../app/store/slices/auth";
+import {
+  asyncUserSignin,
+} from "../../app/store/slices/auth";
+import Cookies from 'universal-cookie';
 
-const SignIn = ({ signInHandle }) => {
+
+const SignIn = () => {
   const dispatch = useDispatch();
 
   const [formValues, setFormValues] = useState({});
-  const [cookies, setCookie] = useCookies(["name"]);
-  const navigate = useNavigate();
 
   const setFormValue = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -17,23 +17,20 @@ const SignIn = ({ signInHandle }) => {
 
   const submitValidate = (e) => {
     e.preventDefault();
-    // setCookie('Login', true);
-    // signInHandle(cookies.Login);
-    // navigate("/");
-    console.log({ ...formValues });
-    dispatch(asyncUserSignup(formValues));
+    dispatch(asyncUserSignin(formValues));
   };
 
-  useEffect(() => {
-    if (cookies.Login === true) {
-      signInHandle(cookies.Login);
-      navigate("/");
-    }
-  }, []);
+  useEffect(()=>{
+    const cookies = new Cookies();
+    let cookie = cookies.get('authToke')
+    console.log(cookie)
+  }
+  ,[])
 
   return (
     <section className="py-5">
       <div className="container">
+        <h1>Sign In</h1>
         <div className="card" style={{ width: "30rem", margin: "auto" }}>
           <div className="card-body">
             <form onSubmit={submitValidate}>
