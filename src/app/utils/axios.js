@@ -31,7 +31,7 @@ api.interceptors.request.use(
     const cookies = new Cookies();
     let cookie = cookies.get('authToken')
     if (cookie) {
-      config.headers["Authorization"] = cookie;
+      config.headers["Authorization"] = `Bearer ` + cookie;
     }
     return config;
   },

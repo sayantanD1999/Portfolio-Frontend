@@ -1,47 +1,94 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import { useCookies } from 'react-cookie';
+import React from 'react';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+// import { Route, Routes } from "react-router-dom";
 import MenuBar from "../src/components/MenuBar"
-import Home from "../src/components/pages/Home"
-import SignIn from "../src/components/pages/SignIn"
-import SignUp from "../src/components/pages/SignUp"
-import Protected from './components/Protected'
+import Home from "../src/pages/Home"
+import SignUp from "../src/pages/SignUp"
+import ErrorPage from "../src/pages/ErrorPage"
+import { checkAuthLoader, tokenLoader } from './util/Auth';
+import AuthenticationPage, { action as authAction, } from './pages/Authentication';
+import { action as logoutAction } from './pages/Logout';
+// import { CustomBrowserRouter } from "./CustomBrowsertHistory";
+// import Protected from './components/Protected';
 import './App.css';
-import { CustomBrowserRouter } from "./CustomBrowsertHistory";
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MenuBar />,
+    errorElement: <ErrorPage />,
+    id: 'root',
+    loader: tokenLoader,
+    children: [
+      { index: true, element: <Home />, loader: checkAuthLoader },
+
+      // {
+      //   path: 'events',
+      //   element: <EventsRootLayout />,
+      //   children: [
+      //     {
+      //       index: true,
+      //       element: <EventsPage />,
+      //       loader: eventsLoader,
+      //     },
+      //     {
+      //       path: ':eventId',
+      //       id: 'event-detail',
+      //       loader: eventDetailLoader,
+      //       children: [
+      //         {
+      //           index: true,
+      //           element: <EventDetailPage />,
+      //           action: deleteEventAction,
+      //         },
+      //         {
+      //           path: 'edit',
+      //           element: <EditEventPage />,
+      //           action: manipulateEventAction,
+      //           loader: checkAuthLoader,
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       path: 'new',
+      //       element: <NewEventPage />,
+      //       action: manipulateEventAction,
+      //       loader: checkAuthLoader,
+      //     },
+      //   ],
+      // },
+
+      {
+        path: 'sign-in',
+        element: <AuthenticationPage />,
+        action: authAction,
+      },
+      {
+        path: 'sign-up',
+        element: <SignUp />,
+        action: authAction,
+      },
+      {
+        path: 'logout',
+        action: logoutAction,
+      },
+    ],
+  },
+]);
 
 function App() {
-  return (
-    <CustomBrowserRouter>
-      {/* <BrowserRouter> */}
-      {/* <MenuBar isSignedIn={isSignedIn} signOutHandle={signout} /> */}
-      <Routes>
-        <Route path="/" element={
-          <Protected>
-            <Home />
-          </Protected>
-        }
-        />
-        <Route path="/sign-in" element={
-          // <Protected>
-            <SignIn />
-          // </Protected>
-        }
-        />
-        <Route path="/sign-up" element={<SignUp />} />
 
-      </Routes>
-      {/* {isSignedIn ? (
-        <div className="d-grid mt-5">
-          <button className="btn-danger" onClick={signout} >
-            Sign out
-          </button>
-        </div>
-      ) : (
-        ""
-      )} */}
-      {/* </BrowserRouter> */}
-    </CustomBrowserRouter>
+
+  return (
+    // <CustomBrowserRouter>
+    //   <MenuBar />
+    //   <Routes>
+    //     <Route path="/" element={<Protected><Home /></Protected>} />
+    //     <Route path="/sign-in" element={<SignIn />} />
+    //     <Route path="/sign-up" element={<SignUp />} />
+    //   </Routes>
+    // </CustomBrowserRouter>
+    <RouterProvider router={router} />
   );
 }
 
