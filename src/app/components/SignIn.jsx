@@ -1,7 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { asyncUserSignin } from '../app/store/slices/auth'
+import { asyncUserSignin } from '../../app/store/slices/auth'
 import { useForm } from 'react-hook-form'
+import Cookies from 'universal-cookie';
+import customHistory from '../utils/helper';
+
 
 const SignIn = () => {
   const {
@@ -11,8 +14,9 @@ const SignIn = () => {
   } = useForm()
 
   const dispatch = useDispatch()
-
   const submitValidate = (data) => {
+    // const cookies = new Cookies();
+    // cookies.set('example-cookie', 'xxxxxxxx');
     dispatch(asyncUserSignin(data))
   }
 

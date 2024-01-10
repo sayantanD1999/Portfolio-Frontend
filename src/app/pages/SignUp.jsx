@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 // import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 // import { useNavigate } from 'react-router-dom'
-import { asyncUserSignup, getAuthLoader, getServerError } from '../app/store/slices/auth'
+import { asyncUserSignup, getAuthLoader, getServerError } from '../../app/store/slices/auth'
 
 const SignIn = () => {
   const dispatch = useDispatch()

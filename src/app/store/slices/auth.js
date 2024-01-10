@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../utils/axios";
-import { customHistory } from "../../../CustomBrowsertHistory";
+// import { customHistory } from "../../../CustomBrowsertHistory";
 import Cookies from 'universal-cookie';
+import { redirect } from 'react-router-dom';
+import customHistory from "../../utils/helper";
+
+
 
 
 // DEFINING THE INITIAL STATE:
@@ -53,7 +57,7 @@ export const authSlice = createSlice({
         builder.addCase(asyncUserSignup.fulfilled, (state, { payload }) => {
             console.log(payload.status === 200)
             if (payload.status === 200) {
-                customHistory.push("/sign-in");
+                redirect('/sign-in');
             } else {
                 state.serverError = payload.data.message
             }
@@ -71,10 +75,12 @@ export const authSlice = createSlice({
         builder.addCase(asyncUserSignin.fulfilled, (state, { payload }) => {
             console.log(payload)
             const cookies = new Cookies();
+
             if (payload.status === 200 && payload.data.token) {
                 cookies.set('authToken', payload.data.token);
                 state.userDetails = payload.data
-                customHistory.push("/");
+                // customHistory.push('/')
+                return redirect(`/`);
             } else {
                 state.serverError = payload.data.message
             }

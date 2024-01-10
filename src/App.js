@@ -1,13 +1,13 @@
 import React from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 // import { Route, Routes } from "react-router-dom";
-import MenuBar from "../src/components/MenuBar"
-import Home from "../src/pages/Home"
-import SignUp from "../src/pages/SignUp"
-import ErrorPage from "../src/pages/ErrorPage"
-import { checkAuthLoader, tokenLoader } from './util/Auth';
-import AuthenticationPage, { action as authAction, } from './pages/Authentication';
-import { action as logoutAction } from './pages/Logout';
+import MenuBar from "../src/app/components/MenuBar"
+import Home from "../src/app/pages/Home"
+import SignUp from "../src/app/pages/SignUp"
+import ErrorPage from "../src/app/pages/ErrorPage"
+import { checkAuthLoader, tokenLoader } from '../src/app/utils/Auth';
+import AuthenticationPage, { action as authAction, } from '../src/app/pages/Authentication';
+import { action as logoutAction } from '../src/app/pages/Logout';
 // import { CustomBrowserRouter } from "./CustomBrowsertHistory";
 // import Protected from './components/Protected';
 import './App.css';
@@ -18,50 +18,11 @@ const router = createBrowserRouter([
     element: <MenuBar />,
     errorElement: <ErrorPage />,
     id: 'root',
-    loader: tokenLoader,
     children: [
       { index: true, element: <Home />, loader: checkAuthLoader },
-
-      // {
-      //   path: 'events',
-      //   element: <EventsRootLayout />,
-      //   children: [
-      //     {
-      //       index: true,
-      //       element: <EventsPage />,
-      //       loader: eventsLoader,
-      //     },
-      //     {
-      //       path: ':eventId',
-      //       id: 'event-detail',
-      //       loader: eventDetailLoader,
-      //       children: [
-      //         {
-      //           index: true,
-      //           element: <EventDetailPage />,
-      //           action: deleteEventAction,
-      //         },
-      //         {
-      //           path: 'edit',
-      //           element: <EditEventPage />,
-      //           action: manipulateEventAction,
-      //           loader: checkAuthLoader,
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       path: 'new',
-      //       element: <NewEventPage />,
-      //       action: manipulateEventAction,
-      //       loader: checkAuthLoader,
-      //     },
-      //   ],
-      // },
-
       {
         path: 'sign-in',
         element: <AuthenticationPage />,
-        action: authAction,
       },
       {
         path: 'sign-up',

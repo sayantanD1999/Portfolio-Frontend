@@ -25,14 +25,19 @@ export function getAuthToken() {
 }
 
 export function tokenLoader() {
-  const token = getAuthToken();
-  return token;
+  // const token = getAuthToken();
+  // return token;
 }
 
 export function checkAuthLoader() {
-  const token = getAuthToken();
+  // const token = getAuthToken();
 
-  if (!token) {
-    return redirect('/sign-in');
-  }
+  // if (!token) {
+  //   return redirect('/sign-in');
+  // }
+
+  console.log('auth loader')
+
+  return null;
+
 }
